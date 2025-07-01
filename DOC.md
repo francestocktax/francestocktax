@@ -12,6 +12,8 @@ Here’s how:
 
 This will give you an **XLSX file** that contains all your gains and losses transactions, ready to import into the app.
 
+---
+
 ## 📥  E-Trade By Benefit Type (Sellable Holdings)
 
 To track which shares are still sellable (vested RSUs and ESPP), download your **Holdings XLSX file** from E*TRADE:
@@ -22,6 +24,8 @@ To track which shares are still sellable (vested RSUs and ESPP), download your *
 4. Click **Download**, then choose **Download Expanded**.
 
 This will give you an **XLSX file** listing all your current holdings by type, which the app can import in the database. ⚠️ Non qualified RSUs and ESPP are converted to Stocks because you already paid income taxes, only capital gains taxes remain.
+
+---
 
 ## 🧮 Simulate selling your Apple stocks at a target price
 
@@ -46,3 +50,47 @@ If you want to **reset the simulation**, simply click on **`Rollback`**.
 This will restore your holdings and calculations to their original state, letting you start a new scenario from scratch.
 
 ✅ Tip: You can repeat this with different target prices or dates to see **what‑if scenarios** and pick the best timing.
+
+---
+
+## 💰 How to add your E*TRADE AAPL dividends
+
+To add all your **E*TRADE AAPL 2024 dividends** in **France Stock Tax**, you’ll need your **Single Account Statements** for the following dates:
+
+- `02/29/24`
+- `05/31/24`
+- `08/31/24`
+- `11/30/24`
+
+### 📥 Download your Single Account Statements from E*TRADE
+
+1. Log in to your **E*TRADE account**.
+2. Go to **Documents > Documents and Statements**.
+3. Select **Document type**: **Statements**.
+4. Set **Timeframe:** to `2024` and click **Apply**.
+5. Download the four statements corresponding to the above dates.
+
+### 📝 Locate your dividends
+
+In each of the four statements, find the section:
+
+> **Activity > Cash Flow Activity by Date**
+
+This will show the dividend payments for your AAPL shares.
+
+### ➕ Enter the dividends in France Stock Tax
+
+Use the **“Add New Dividends”** form in the app and add each dividend manually:
+
+| Field              | Value                          |
+|---------------------|-------------------------------|
+| **Ticker Name**     | `AAPL`                        |
+| **Payment Date**    | Activity date from statement  |
+| **Payment Country** | `US`                          |
+| **Dividend Amount** | Amount of **Qualified Dividend** |
+| **Tax Withholding** | `0.15`                        |
+| **USD/EUR Rate**    | Auto-filled by the app        |
+
+Repeat this process **4 times**, once for each dividend.
+
+✅ That’s it! Your AAPL dividends for 2024 will now be properly tracked for French tax purposes.
