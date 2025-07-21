@@ -60,7 +60,7 @@ Compute the income taxes for 2025 year.
 
 ```python
 import sys
-def calculImpot(current_sum, gain_acq_imposable):
+def incomeTaxes(current_sum, gain_acq_imposable):
     tranches = [(0, 0, 11497), (0.11, 11498, 29315), (0.30, 29316, 83823), (0.41, 83824, 180294), (0.45, 180295, sys.maxsize)]
     to_process = gain_acq_imposable
     impot = 0
@@ -88,5 +88,5 @@ MAX_DEDUCTION_FORFAITAIRE_10 = 14_426
 SOCIAL_ACQ_GAINS_TAXES = 100_000 * 0.097
 EMPLOYEE_CONTRIBUTION = 100_000 * 0.10
 FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
-TAXES = calculImpot(0, 90_000+100_000 - MAX_DEDUCTION_FORFAITAIRE_10) + SOCIAL_ACQ_GAINS_TAXES + EMPLOYEE_CONTRIBUTION + FLAT_TAX_CAPITAL_GAINS # 90630.29
+TAXES = incomeTaxes(0, 90_000+100_000 - MAX_DEDUCTION_FORFAITAIRE_10) + SOCIAL_ACQ_GAINS_TAXES + EMPLOYEE_CONTRIBUTION + FLAT_TAX_CAPITAL_GAINS # 90630.29
 ```
