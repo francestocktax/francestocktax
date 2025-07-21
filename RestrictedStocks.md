@@ -50,3 +50,43 @@ This synthesis does not replace personal tax advice. For significant amounts (no
 
 ---
 
+## 4. Examples
+
+You can simulate those examples using [Official French Taxes Simulator](https://simulateur-ir-ifi.impots.gouv.fr/calcul_impot/2025/complet/index.htm)
+
+### Income taxes in Python
+
+Compute the income taxes for 2025 year.
+
+```python
+import sys
+def calculImpot(current_sum, gain_acq_imposable):
+    tranches = [(0, 0, 11497), (0.11, 11498, 29315), (0.30, 29316, 83823), (0.41, 83824, 180294), (0.45, 180295, sys.maxsize)]
+    to_process = gain_acq_imposable
+    impot = 0
+    for k in tranches:
+        (k, minval, maxval) = k
+        a_imposer = 0
+        if current_sum <= maxval:
+            if (current_sum + to_process) <= maxval:
+                a_imposer = to_process
+            else:
+                a_imposer = maxval-current_sum
+            to_process = to_process - a_imposer
+            impot = impot + (a_imposer * k)
+            current_sum += a_imposer
+    return impot
+```
+
+### 4.1 Employee / Single / Hollande stocks
+
+An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Hollande** "28 Sep 2012 – 07 Aug 2015" stocks with **acqusition gains** of **100000 euros** (**1TT**) and **capital gains** of **50000 euros** (**3VG**).
+
+```python
+RFR = (90_000+100_000 - 14_426) + 50000 # 225574
+MAX_DEDUCTION_FORFAITAIRE_10 = 14_426
+SOCIAL_ACQ_GAINS_TAXES = 100_000 * 0.097
+EMPLOYEE_CONTRIBUTION = 100_000 * 0.10
+FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
+TAXES = calculImpot(0, 90_000+100_000 - MAX_DEDUCTION_FORFAITAIRE_10) + SOCIAL_ACQ_GAINS_TAXES + EMPLOYEE_CONTRIBUTION + FLAT_TAX_CAPITAL_GAINS # 90630.29
+```
