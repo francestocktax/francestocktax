@@ -54,7 +54,7 @@ This synthesis does not replace personal tax advice. For significant amounts (no
 
 You can simulate those examples using [Official French Taxes Simulator](https://simulateur-ir-ifi.impots.gouv.fr/calcul_impot/2025/complet/index.htm)
 
-### Income taxes in Python
+### Pre-requisites: income taxes in Python
 
 Compute the income taxes for 2025 year.
 
