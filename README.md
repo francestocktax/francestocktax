@@ -33,7 +33,8 @@ We’re happy to collaborate and extend compatibility!
 
 ## 📚 Documentation
 
-Full documentation is available in [DOC.md](./DOC.md).
+- France Stock Tax documentation is available in [DOC.md](./DOC.md).
+- Restricted Stocks Taxes documentation and examples are available in [RestrictedStocks.md](./RestrictedStocks.md).
 
 ---
 
