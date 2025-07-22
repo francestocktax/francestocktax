@@ -3,7 +3,7 @@
 **Version : 21 July 2025**  
 **Scope : French tax residents**  
 
-This memo summarises how the **acquisition gain** ("gain d’acquisition", Gain d'Acquisition) and the **capital gain** (Plus Value de Cession) of restricted stocks (*attributions gratuites d’actions* – AGA) are taxed in France, depending on the french subplan of your company that authorised the plan. In this documentation, four successive regimes are commonly referred to by the name of the government that introduced them: **“Hollande”**, **“Macron 1”**, **“Macron 2”**, and **“Macron 3”**.
+This memo summarises how the **acquisition gain** ("gain d’acquisition", Gain d'Acquisition) and the **capital gain** (Plus Value de Cession) of restricted stocks (*attributions gratuites d’actions* – AGA) are taxed in France, depending on the french subplan of your company that authorised the plan. In this documentation, four successive regimes are commonly referred to the name of the government that introduced them: **“Hollande”**, **“Macron 1”**, **“Macron 2”**, and **“Macron 3”**.
 
 > ⚠️ **Official source**: The synthesis below is based primarily on the French tax administration’s FAQ *“Mon entreprise m’a attribué des actions gratuites, comment sera imposé le gain d’acquisition ?”* ([impots.gouv.fr](https://www.impots.gouv.fr/particulier/questions/mon-entreprise-ma-attribue-des-actions-gratuites-comment-sera-impose-le-gain)).
 
@@ -83,10 +83,45 @@ def incomeTaxes(current_sum, gain_acq_imposable):
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Hollande** "28 Sep 2012 – 07 Aug 2015" stocks with **acqusition gains** of **100000 euros** (**1TT**) and **capital gains** of **50000 euros** (**3VG**).
 
 ```python
-RFR = (90_000+100_000 - 14_426) + 50000 # 225574
-MAX_DEDUCTION_FORFAITAIRE_10 = 14_426
+MAX_10PERCENT_DEDUCTION = 14_426
+RFR = (90_000+100_000 - MAX_10PERCENT_DEDUCTION) + 50000 # 225574
 SOCIAL_ACQ_GAINS_TAXES = 100_000 * 0.097
 EMPLOYEE_CONTRIBUTION = 100_000 * 0.10
 FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
-TAXES = incomeTaxes(0, 90_000+100_000 - MAX_DEDUCTION_FORFAITAIRE_10) + SOCIAL_ACQ_GAINS_TAXES + EMPLOYEE_CONTRIBUTION + FLAT_TAX_CAPITAL_GAINS # 90630.29
+TAXES = incomeTaxes(0, 90_000+100_000 - MAX_10PERCENT_DEDUCTION) + \
+    SOCIAL_ACQ_GAINS_TAXES + \
+    EMPLOYEE_CONTRIBUTION + \
+    FLAT_TAX_CAPITAL_GAINS # 90630.29
+```
+
+### 4.2 Employee / Single / Macron 1 stocks
+
+An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 1** "08 Aug 2015 – 30 Dec 2016" stocks two years after vesting with **acqusition gains** of **350000 euros** (**1TZ = 175000**, **1UZ = 175000**)  and **capital gains** of **50000 euros** (**3VG**).
+
+```python
+RFR = 90_000*0.90 + 350_000 + 50_000 # 481000
+SOCIAL_ACQ_GAINS_TAXES = 350_000 * 0.172
+FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
+CEHR_TAXES = (RFR-250_000)*0.03
+TAXES = incomeTaxes(0, 90_000*0.90 + 175_000) + \
+    SOCIAL_ACQ_GAINS_TAXES + \
+    CEHR_TAXES + \
+    FLAT_TAX_CAPITAL_GAINS # 174063.19
+```
+
+### 4.3 Employee / Married / Macron 3 stocks
+
+An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 3** "01 Jan 2018 onwards" stocks with **acqusition gains** of **350000 euros** (**1TZ = 150000**, **1TT = 50000**, **1WZ = 150000**)  and **capital gains** of **50000 euros** (**3VG**). His wife has a salary of **130000 euros** (**1BJ**).
+
+```python
+RFR = (90_000+50_000)*0.90 + 130_000*0.90 + 300_000 + 50_000 # 593000
+SOCIAL_ACQ_GAINS_TAXES = 300_000 * 0.172 + 50_000 * 0.097
+EMPLOYEE_CONTRIBUTION = 50_000*0.10
+FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
+CEHR_TAXES = (RFR-500_000)*0.03
+TAXES = incomeTaxes(0, ((90_000+50_000)*0.90 + 130_000*0.90 + 150_000)/2)*2 + \
+    SOCIAL_ACQ_GAINS_TAXES + \
+    EMPLOYEE_CONTRIBUTION + \
+    CEHR_TAXES + \
+    FLAT_TAX_CAPITAL_GAINS # 209556.38
 ```
