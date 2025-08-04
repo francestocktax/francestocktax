@@ -83,15 +83,21 @@ def incomeTaxes(current_sum, gain_acq_imposable):
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Hollande** "28 Sep 2012 – 07 Aug 2015" stocks with **acqusition gains** of **100000 euros** (**1TT**) and **capital gains** of **50000 euros** (**3VG**).
 
 ```python
+var_1AJ = 90_000
+var_1TT = 100_000
+var_3VG = 50_000
 MAX_10PERCENT_DEDUCTION = 14_426
-RFR = (90_000+100_000 - MAX_10PERCENT_DEDUCTION) + 50000 # 225574
-SOCIAL_ACQ_GAINS_TAXES = 100_000 * 0.097
-EMPLOYEE_CONTRIBUTION = 100_000 * 0.10
-FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
-TAXES = incomeTaxes(0, 90_000+100_000 - MAX_10PERCENT_DEDUCTION) + \
+INCOME = var_1AJ+var_1TT - MAX_10PERCENT_DEDUCTION
+RFR = INCOME + var_3VG # 225574
+SOCIAL_ACQ_GAINS_TAXES = var_1TT * 0.097
+EMPLOYEE_CONTRIBUTION_TAXES = var_1TT * 0.10
+CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
+CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
+TAXES = incomeTaxes(0, INCOME) + \
     SOCIAL_ACQ_GAINS_TAXES + \
-    EMPLOYEE_CONTRIBUTION + \
-    FLAT_TAX_CAPITAL_GAINS # 90630.29
+    EMPLOYEE_CONTRIBUTION_TAXES + \
+    CAPITAL_GAINS_INCOME_TAXES + \
+    CAPITAL_GAINS_SOCIAL_TAXES # 90630.29
 ```
 
 ### 4.2 Employee / Single / Macron 1 stocks
@@ -99,14 +105,21 @@ TAXES = incomeTaxes(0, 90_000+100_000 - MAX_10PERCENT_DEDUCTION) + \
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 1** "08 Aug 2015 – 30 Dec 2016" stocks two years after vesting with **acqusition gains** of **350000 euros** (**1TZ = 175000**, **1UZ = 175000**)  and **capital gains** of **50000 euros** (**3VG**).
 
 ```python
-RFR = 90_000*0.90 + 350_000 + 50_000 # 481000
-SOCIAL_ACQ_GAINS_TAXES = 350_000 * 0.172
-FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
+var_1AJ = 90_000
+var_1TZ = 175_000
+var_1UZ = 175_000
+var_3VG = 50_000
+INCOME = var_1AJ - var_1AJ*0.10 + var_1TZ
+RFR = var_1AJ - var_1AJ*0.10 + var_1TZ + var_1UZ + var_3VG # 481000
+SOCIAL_ACQ_GAINS_TAXES = (var_1TZ +  var_1UZ) * 0.172
+CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
+CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
 CEHR_TAXES = (RFR-250_000)*0.03
-TAXES = incomeTaxes(0, 90_000*0.90 + 175_000) + \
+TAXES = incomeTaxes(0, INCOME) + \
     SOCIAL_ACQ_GAINS_TAXES + \
-    CEHR_TAXES + \
-    FLAT_TAX_CAPITAL_GAINS # 174063.19
+    CAPITAL_GAINS_INCOME_TAXES + \
+    CAPITAL_GAINS_SOCIAL_TAXES + \
+    CEHR_TAXES  # 174063.19
 ```
 
 ### 4.3 Employee / Married / Macron 3 stocks
@@ -114,14 +127,24 @@ TAXES = incomeTaxes(0, 90_000*0.90 + 175_000) + \
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 3** "01 Jan 2018 onwards" stocks with **acqusition gains** of **350000 euros** (**1TZ = 150000**, **1TT = 50000**, **1WZ = 150000**)  and **capital gains** of **50000 euros** (**3VG**). His wife has a salary of **130000 euros** (**1BJ**).
 
 ```python
-RFR = (90_000+50_000)*0.90 + 130_000*0.90 + 300_000 + 50_000 # 593000
-SOCIAL_ACQ_GAINS_TAXES = 300_000 * 0.172 + 50_000 * 0.097
-EMPLOYEE_CONTRIBUTION = 50_000*0.10
-FLAT_TAX_CAPITAL_GAINS = 50_000*0.30
+var_1AJ = 150_000
+var_1BJ = 130_000
+var_1TT = 50_000
+var_1TZ = 150_000
+var_1WZ = 150_000
+var_3VG = 50_000
+MAX_10PERCENT_DEDUCTION = 14_426
+INCOME = var_1AJ + var_1TT -  MAX_10PERCENT_DEDUCTION +  var_1BJ - var_1BJ*0.10 + var_1TZ
+RFR =  INCOME + var_1WZ + var_3VG # 652574
+SOCIAL_ACQ_GAINS_TAXES = var_1TT * 0.097 + (var_1TZ +  var_1WZ) * 0.172
+EMPLOYEE_CONTRIBUTION_TAXES = var_1TT * 0.10
+CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
+CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
 CEHR_TAXES = (RFR-500_000)*0.03
-TAXES = incomeTaxes(0, ((90_000+50_000)*0.90 + 130_000*0.90 + 150_000)/2)*2 + \
+TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
     SOCIAL_ACQ_GAINS_TAXES + \
-    EMPLOYEE_CONTRIBUTION + \
-    CEHR_TAXES + \
-    FLAT_TAX_CAPITAL_GAINS # 209556.38
+    EMPLOYEE_CONTRIBUTION_TAXES + \
+    CAPITAL_GAINS_INCOME_TAXES + \
+    CAPITAL_GAINS_SOCIAL_TAXES + \
+    CEHR_TAXES  # 238151.9
 ```
