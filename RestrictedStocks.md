@@ -82,6 +82,8 @@ def incomeTaxes(current_sum, gain_acq_imposable):
 
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Hollande** "28 Sep 2012 – 07 Aug 2015" stocks with **acqusition gains** of **100000 euros** (**1TT**) and **capital gains** of **50000 euros** (**3VG**).
 
+#### Reference Fiscal Revenue / Revenu Fiscal de Reference 
+
 ```python
 var_1AJ = 90_000
 var_1TT = 100_000
@@ -89,6 +91,11 @@ var_3VG = 50_000
 MAX_10PERCENT_DEDUCTION = 14_426
 INCOME = var_1AJ+var_1TT - MAX_10PERCENT_DEDUCTION
 RFR = INCOME + var_3VG # 225574
+```
+
+#### Total Taxes
+
+```python
 SOCIAL_ACQ_GAINS_TAXES = var_1TT * 0.097
 EMPLOYEE_CONTRIBUTION_TAXES = var_1TT * 0.10
 CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
@@ -100,9 +107,21 @@ TAXES = incomeTaxes(0, INCOME) + \
     CAPITAL_GAINS_SOCIAL_TAXES # 90630.29
 ```
 
+#### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
+
+```python
+IR = incomeTaxes(0, INCOME)
+RNI = INCOME # all revenue taxed as income
+Rinclus = INCOME # revenue included in withholding tax rate
+Rras = var_1AJ+var_1TT # salaries before deduction
+IR*(Rinclus/RNI)/(Rras) # 0.294
+```
+
 ### 4.2 Employee / Single / Macron 1 stocks
 
 An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 1** "08 Aug 2015 – 30 Dec 2016" stocks two years after vesting with **acqusition gains** of **350000 euros** (**1TZ = 175000**, **1UZ = 175000**)  and **capital gains** of **50000 euros** (**3VG**).
+
+#### Reference Fiscal Revenue / Revenu Fiscal de Reference 
 
 ```python
 var_1AJ = 90_000
@@ -111,6 +130,11 @@ var_1UZ = 175_000
 var_3VG = 50_000
 INCOME = var_1AJ - var_1AJ*0.10 + var_1TZ
 RFR = var_1AJ - var_1AJ*0.10 + var_1TZ + var_1UZ + var_3VG # 481000
+```
+
+#### Total Taxes
+
+```python
 SOCIAL_ACQ_GAINS_TAXES = (var_1TZ +  var_1UZ) * 0.172
 CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
 CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
@@ -120,6 +144,15 @@ TAXES = incomeTaxes(0, INCOME) + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES  # 174063.19
+```
+#### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
+
+```python
+IR = incomeTaxes(0, INCOME)
+RNI = INCOME # all revenue taxed as income
+Rinclus = INCOME - var_1TZ # revenue included in withholding tax rate
+Rras = var_1AJ # salaries before deduction
+IR*(Rinclus/RNI)/(Rras) # 0.323
 ```
 
 ### 4.3 Employee / Married / Macron 3 stocks
