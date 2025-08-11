@@ -86,35 +86,44 @@ An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Hollande**
 
 ```python
 var_1AJ = 90_000
+var_1BJ = 0
 var_1TT = 100_000
+var_1UT = 0
+var_1TZ = 0
+var_1UZ = 0
+var_1WZ = 0
 var_3VG = 50_000
 MAX_10PERCENT_DEDUCTION = 14_426
-INCOME = var_1AJ+var_1TT - MAX_10PERCENT_DEDUCTION
-RFR = INCOME + var_3VG # 225574
+DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, (var_1AJ+var_1TT)*0.10)
+DEDUCTION2 = min(MAX_10PERCENT_DEDUCTION, (var_1BJ+var_1UT)*0.10)
+INCOME = var_1AJ + var_1TT - DEDUCTION1 +  var_1BJ + var_1UT  - DEDUCTION2 + var_1TZ
+RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 225574
 ```
 
 #### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = var_1TT * 0.097
-EMPLOYEE_CONTRIBUTION_TAXES = var_1TT * 0.10
+SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ +  var_1UZ + var_1WZ) * 0.172
+EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
 CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
 CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
+CEHR_TAXES = 0
 TAXES = incomeTaxes(0, INCOME) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES # 90630.29
+    CAPITAL_GAINS_SOCIAL_TAXES + \
+    CEHR_TAXES # 90630.29
 ```
 
 #### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
 ```python
-IR = incomeTaxes(0, INCOME)
-RNI = INCOME # all revenue taxed as income
-Rinclus = INCOME # revenue included in withholding tax rate
-Rras = var_1AJ+var_1TT # salaries before deduction
-IR*(Rinclus/RNI)/(Rras) # 0.294
+IR = round(incomeTaxes(0, INCOME))
+Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
+RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ
+Rras = var_1AJ + var_1BJ
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 29.4
 ```
 
 ### 4.2 Employee / Single / Macron 1 stocks
@@ -125,52 +134,72 @@ An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 1**
 
 ```python
 var_1AJ = 90_000
+var_1TT = 0
+var_1BJ = 0
+var_1UT = 0
 var_1TZ = 175_000
 var_1UZ = 175_000
+var_1WZ = 0
 var_3VG = 50_000
-INCOME = var_1AJ - var_1AJ*0.10 + var_1TZ
-RFR = var_1AJ - var_1AJ*0.10 + var_1TZ + var_1UZ + var_3VG # 481000
+MAX_10PERCENT_DEDUCTION = 14_426
+DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, (var_1AJ+var_1TT)*0.10)
+DEDUCTION2 = min(MAX_10PERCENT_DEDUCTION, (var_1BJ+var_1UT)*0.10)
+INCOME = var_1AJ + var_1TT - DEDUCTION1 +  var_1BJ + var_1UT  - DEDUCTION2 + var_1TZ
+RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 481000
 ```
 
 #### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = (var_1TZ +  var_1UZ) * 0.172
+SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1UZ + var_1WZ) * 0.172
+EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
 CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
 CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
 CEHR_TAXES = (RFR-250_000)*0.03
 TAXES = incomeTaxes(0, INCOME) + \
     SOCIAL_ACQ_GAINS_TAXES + \
+    EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
-    CEHR_TAXES  # 174063.19
+    CAPITAL_GAINS_SOCIAL_TAXES  + \
+    CEHR_TAXES # 174063.19
 ```
 #### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
 ```python
-IR = incomeTaxes(0, INCOME)
-RNI = INCOME # all revenue taxed as income
-Rinclus = INCOME - var_1TZ # revenue included in withholding tax rate
-Rras = var_1AJ # salaries before deduction
-IR*(Rinclus/RNI)/(Rras) # 0.323
+IR = round(incomeTaxes(0, INCOME))
+Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
+RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ
+Rras = var_1AJ + var_1BJ
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 32.3
 ```
 
 ### 4.3 Employee / Married / Macron 3 stocks
 
-An employee has an annual salary (**1AJ**) of **90000 euros**, sold **Macron 3** "01 Jan 2018 onwards" stocks with **acqusition gains** of **350000 euros** (**1TZ = 150000**, **1TT = 50000**, **1WZ = 150000**)  and **capital gains** of **50000 euros** (**3VG**). His wife has a salary of **130000 euros** (**1BJ**).
+An employee has an annual salary (**1AJ**) of **150000 euros**, sold **Macron 3** "01 Jan 2018 onwards" stocks with **acqusition gains** of **350000 euros** (**1TZ = 150000**, **1TT = 50000**, **1WZ = 150000**)  and **capital gains** of **50000 euros** (**3VG**). His wife has a salary of **130000 euros** (**1BJ**).
+
+#### Reference Fiscal Revenue / Revenu Fiscal de Reference 
 
 ```python
 var_1AJ = 150_000
 var_1BJ = 130_000
 var_1TT = 50_000
+var_1UT = 0
 var_1TZ = 150_000
+var_1UZ = 0
 var_1WZ = 150_000
 var_3VG = 50_000
 MAX_10PERCENT_DEDUCTION = 14_426
-INCOME = var_1AJ + var_1TT -  MAX_10PERCENT_DEDUCTION +  var_1BJ - var_1BJ*0.10 + var_1TZ
-RFR =  INCOME + var_1WZ + var_3VG # 652574
-SOCIAL_ACQ_GAINS_TAXES = var_1TT * 0.097 + (var_1TZ +  var_1WZ) * 0.172
-EMPLOYEE_CONTRIBUTION_TAXES = var_1TT * 0.10
+DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, (var_1AJ+var_1TT)*0.10)
+DEDUCTION2 = min(MAX_10PERCENT_DEDUCTION, (var_1BJ+var_1UT)*0.10)
+INCOME = var_1AJ + var_1TT - DEDUCTION1 +  var_1BJ + var_1UT  - DEDUCTION2 + var_1TZ
+RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 652574.0
+```
+
+#### Total Taxes
+
+```python
+SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1WZ + var_1UZ) * 0.172
+EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
 CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
 CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
 CEHR_TAXES = (RFR-500_000)*0.03
@@ -180,4 +209,32 @@ TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES  # 238151.9
+```
+
+#### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
+
+```python
+IR = round(incomeTaxes(0, INCOME/2)*2)
+Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
+RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ
+Rras = var_1AJ + var_1BJ
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 31.8
+```
+
+#### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1BJ
+
+```python
+INCOME2 = var_1BJ + var_1UT - DEDUCTION2 + var_1TZ/2
+IR2=round(incomeTaxes(0,  INCOME2))
+Rinclus2 = var_1BJ - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
+RNI2 = Rinclus2 + var_1UT - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ/2
+Rras2 = var_1BJ + var_1UT # salaries before deduction
+IR2*(Rinclus2/RNI2)/(Rras2) # 0.296
+```
+
+#### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1AJ
+
+```python
+(IR*(Rinclus/RNI) - IR2*(Rinclus2/RNI2)/(Rras2) * (var_1BJ + var_1UT)
+     -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1AJ) # 0.336
 ```
