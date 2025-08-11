@@ -215,8 +215,10 @@ TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
 
 ```python
 IR = round(incomeTaxes(0, INCOME/2)*2)
-Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
-RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ
+Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
+    - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
+RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
+    - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ
 Rras = var_1AJ + var_1BJ
 Taux_foyer = (IR*(Rinclus/RNI))/Rras # 31.8
 ```
