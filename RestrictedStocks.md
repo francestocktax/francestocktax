@@ -123,7 +123,7 @@ IR = round(incomeTaxes(0, INCOME))
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ
 Rras = var_1AJ + var_1BJ
-Taux_foyer = (IR*(Rinclus/RNI))/Rras # 29.4
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 29.4%
 ```
 
 ### 4.2 Employee / Single / Macron 1 stocks
@@ -170,7 +170,7 @@ IR = round(incomeTaxes(0, INCOME))
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ
 Rras = var_1AJ + var_1BJ
-Taux_foyer = (IR*(Rinclus/RNI))/Rras # 32.3
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 32.3%
 ```
 
 ### 4.3 Employee / Married / Macron 3 stocks
@@ -220,7 +220,7 @@ Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
     - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ
 Rras = var_1AJ + var_1BJ
-Taux_foyer = (IR*(Rinclus/RNI))/Rras # 31.8
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 31.8%
 ```
 
 #### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1BJ
@@ -231,12 +231,12 @@ IR2=round(incomeTaxes(0,  INCOME2))
 Rinclus2 = var_1BJ - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
 RNI2 = Rinclus2 + var_1UT - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ/2
 Rras2 = var_1BJ + var_1UT # salaries before deduction
-IR2*(Rinclus2/RNI2)/(Rras2) # 0.296
+IR2*(Rinclus2/RNI2)/(Rras2) # 29.6%
 ```
 
 #### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1AJ
 
 ```python
 (IR*(Rinclus/RNI) - IR2*(Rinclus2/RNI2)/(Rras2) * (var_1BJ + var_1UT)
-     -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1AJ) # 0.336
+     -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1AJ) # 33.6%
 ```
