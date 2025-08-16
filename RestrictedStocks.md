@@ -118,6 +118,8 @@ TAXES = incomeTaxes(0, INCOME) + \
 
 #### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
+To know how the tax rates are computed, you can click on the link "Détail du taux" in the last summary page of the [Official French Taxes Simulator](https://simulateur-ir-ifi.impots.gouv.fr/calcul_impot/2025/complet/index.htm)
+
 ```python
 IR = round(incomeTaxes(0, INCOME))
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
