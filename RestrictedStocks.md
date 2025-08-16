@@ -225,6 +225,8 @@ Taux_foyer = (IR*(Rinclus/RNI))/Rras # 31.8%
 
 #### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1BJ
 
+We start with 1BJ because var_1AJ + var_1TT > var_1BJ + var_1UT
+
 ```python
 INCOME2 = var_1BJ + var_1UT - DEDUCTION2 + var_1TZ/2
 IR2=round(incomeTaxes(0,  INCOME2))
@@ -239,4 +241,74 @@ IR2*(Rinclus2/RNI2)/(Rras2) # 29.6%
 ```python
 (IR*(Rinclus/RNI) - IR2*(Rinclus2/RNI2)/(Rras2) * (var_1BJ + var_1UT)
      -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1AJ) # 33.6%
+```
+
+### 4.3 Employee / Married / Macron 1 stocks
+
+An employee has an annual salary (**1AJ**) of **90000 euros**. His wife has a salary of **140000 euros** (**1BJ**) sold **Macron 1** stocks with **acqusition gains** of **340000 euros** (**1TZ = 150000**, **1UT = 40000**, **1UZ = 150000**)  and **capital gains** of **60000 euros** (**3VG**)
+
+#### Reference Fiscal Revenue / Revenu Fiscal de Reference 
+
+```python
+var_1AJ = 90_000
+var_1BJ = 140_000
+var_1TT = 0_000
+var_1UT = 40_000
+var_1TZ = 150_000
+var_1UZ = 150_000
+var_1WZ = 0
+var_3VG = 60_000
+MAX_10PERCENT_DEDUCTION = 14_426
+DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, (var_1AJ+var_1TT)*0.10)
+DEDUCTION2 = min(MAX_10PERCENT_DEDUCTION, (var_1BJ+var_1UT)*0.10)
+INCOME = var_1AJ + var_1TT - DEDUCTION1 +  var_1BJ + var_1UT  - DEDUCTION2 + var_1TZ
+RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 652574.0
+```
+
+#### Total Taxes
+
+```python
+SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1WZ + var_1UZ) * 0.172
+EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
+CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
+CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
+CEHR_TAXES = (RFR-500_000)*0.03
+TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
+    SOCIAL_ACQ_GAINS_TAXES + \
+    EMPLOYEE_CONTRIBUTION_TAXES + \
+    CAPITAL_GAINS_INCOME_TAXES + \
+    CAPITAL_GAINS_SOCIAL_TAXES + \
+    CEHR_TAXES  # 212602
+```
+
+#### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
+
+```python
+IR = round(incomeTaxes(0, INCOME/2)*2)
+Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
+    - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
+RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
+    - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ
+Rras = var_1AJ + var_1BJ
+Taux_foyer = (IR*(Rinclus/RNI))/Rras # 30.3%
+```
+
+#### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1AJ
+
+We start with 1AJ because var_1AJ + var_1TT < var_1BJ + var_1UT
+
+```python
+INCOME1 = var_1AJ + var_1TT - DEDUCTION1 + var_1TZ/2
+IR1=round(incomeTaxes(0,  INCOME1))
+Rinclus1 = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
+RNI1 = Rinclus1 + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ/2
+Rras1 = var_1AJ + var_1TT
+IR1*(Rinclus1/RNI1)/(Rras1) # 27.6%
+```
+
+#### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1BJ
+
+```python
+(IR*(Rinclus/RNI) - IR1*(Rinclus1/RNI1)/(Rras1) * (var_1AJ + var_1TT)
+     -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1BJ) # 32.1%
 ```
