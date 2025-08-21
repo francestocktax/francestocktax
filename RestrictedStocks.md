@@ -26,7 +26,7 @@ The decisive criterion is the date of the Assemblée Générale Extraordinaire (
 
 | Regime (nickname)      | AGE authorisation date | Income‑tax treatment of the acquisition gain | Social contributions on GA | 10 % employee contribution | Key features |
 |------------------------|------------------------|----------------------------------------------|--------------------------|-------------------|--------------|
-| **Hollande**           | 28 Sep 2012 – 07 Aug 2015 | Progressive income-tax scale | 17.2 % (investment income) *[see note]* | **Yes** | Least favourable; GA declared as salary. |
+| **Hollande**           | 28 Sep 2012 – 07 Aug 2015 | Progressive income-tax scale | 9.7 % (investment income) *[see note]* | **Yes** | Least favourable; GA declared as salary. |
 | **Macron 1**           | 08 Aug 2015 – 30 Dec 2016 | Progressive income‑tax scale with holding‑period discount | 17.2 % | **No** | Holding-period discount without the 300k threshold |
 | **Macron 2**           | 31 Dec 2016 – 31 Dec 2017 | GA ≤ €300 k: Progressive income‑tax scale with holding‑period discount; GA > €300 k: Progressive income-tax scale (no discount) | GA ≤ €300 k: 17.2 %; > €300 k: 9.7 % | GA > €300 k: **Yes** | €300 k threshold splits the tax treatment. |
 | **Macron 3**   | 01 Jan 2018 onwards     | GA ≤ €300 k: Progressive income-tax scale **with** 50% discount; GA > €300 k: Progressive income-tax scale without 50% discount| GA ≤ €300 k: 17.2 %; > €300 k: 9.7 % | GA > €300 k: **Yes** | Flat 50 % discount replaces holding‑period discount. |
