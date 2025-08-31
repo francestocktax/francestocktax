@@ -234,14 +234,14 @@ INCOME2 = var_1BJ + var_1UT - DEDUCTION2 + var_1TZ/2
 IR2=round(incomeTaxes(0,  INCOME2))
 Rinclus2 = var_1BJ - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
 RNI2 = Rinclus2 + var_1UT - round(DEDUCTION2*(var_1UT)/(var_1BJ+var_1UT)) + var_1TZ/2
-Rras2 = var_1BJ + var_1UT # salaries before deduction
+Rras2 = var_1BJ # salaries before deduction
 IR2*(Rinclus2/RNI2)/(Rras2) # 29.6%
 ```
 
 #### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1AJ
 
 ```python
-(IR*(Rinclus/RNI) - IR2*(Rinclus2/RNI2)/(Rras2) * (var_1BJ + var_1UT)
+(IR*(Rinclus/RNI) - IR2*(Rinclus2/RNI2)/(Rras2) * (var_1BJ)
      -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1AJ) # 33.6%
 ```
 
@@ -304,13 +304,13 @@ INCOME1 = var_1AJ + var_1TT - DEDUCTION1 + var_1TZ/2
 IR1=round(incomeTaxes(0,  INCOME1))
 Rinclus1 = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT))
 RNI1 = Rinclus1 + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1TZ/2
-Rras1 = var_1AJ + var_1TT
+Rras1 = var_1AJ
 IR1*(Rinclus1/RNI1)/(Rras1) # 27.6%
 ```
 
 #### Individualized Withholding tax rate / Taux de prélèvement à la source individualisé 1BJ
 
 ```python
-(IR*(Rinclus/RNI) - IR1*(Rinclus1/RNI1)/(Rras1) * (var_1AJ + var_1TT)
+(IR*(Rinclus/RNI) - IR1*(Rinclus1/RNI1)/(Rras1) * (var_1AJ)
      -  IR*(Rinclus/RNI)/(Rras)* 0)/(var_1BJ) # 32.1%
 ```
