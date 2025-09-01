@@ -34,7 +34,8 @@ We’re happy to collaborate and extend compatibility!
 ## 📚 Documentation
 
 - France Stock Tax documentation is available in [DOC.md](./DOC.md).
-- Restricted Stocks Taxes documentation and examples are available in [RestrictedStocks.md](./RestrictedStocks.md).
+- Restricted Stocks Taxes documentation is available in [RSU.md](./RSU.md).
+- Multiple examples are available in [EXAMPLES.md](./EXAMPLES.md).
 
 ---
 
