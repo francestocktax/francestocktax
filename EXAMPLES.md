@@ -53,17 +53,18 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 225574
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ +  var_1UZ + var_1WZ) * 0.172
-EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
-CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
-CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
+    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
+EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
+CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
+CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
 CEHR_TAXES = 0
-TAXES = incomeTaxes(0, INCOME) + \
+TAXES = round(incomeTaxes(0, INCOME)) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CAPITAL_GAINS_SOCIAL_TAXES + \
-    CEHR_TAXES # 90630.29
+    CEHR_TAXES # 90630
 ```
 
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
@@ -104,17 +105,18 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 481000
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1UZ + var_1WZ) * 0.172
-EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
-CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
-CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
-CEHR_TAXES = (RFR-250_000)*0.03
-TAXES = incomeTaxes(0, INCOME) + \
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
+    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
+EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
+CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
+CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
+CEHR_TAXES = round((RFR-250_000)*0.03)
+TAXES = round(incomeTaxes(0, INCOME)) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CAPITAL_GAINS_SOCIAL_TAXES  + \
-    CEHR_TAXES # 174063.19
+    CEHR_TAXES # 174063
 ```
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
@@ -152,17 +154,18 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 652574.0
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1WZ + var_1UZ) * 0.172
-EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
-CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
-CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
-CEHR_TAXES = (RFR-500_000)*0.03
-TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
+    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
+EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
+CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
+CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
+CEHR_TAXES = round((RFR-500_000)*0.03)
+TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CAPITAL_GAINS_SOCIAL_TAXES + \
-    CEHR_TAXES  # 238151.9
+    CEHR_TAXES  # 238152
 ```
 
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
@@ -223,12 +226,13 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 606574.0
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = (var_1TT + var_1UT) * 0.097 + (var_1TZ + var_1WZ + var_1UZ) * 0.172
-EMPLOYEE_CONTRIBUTION_TAXES = (var_1TT + var_1UT) * 0.10
-CAPITAL_GAINS_INCOME_TAXES = var_3VG*0.128
-CAPITAL_GAINS_SOCIAL_TAXES = var_3VG*0.172
-CEHR_TAXES = (RFR-500_000)*0.03
-TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
+    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
+EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
+CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
+CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
+CEHR_TAXES = round((RFR-500_000)*0.03)
+TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
@@ -239,7 +243,7 @@ TAXES = incomeTaxes(0, INCOME/2.0) * 2.0 + \
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
 ```python
-IR = round(incomeTaxes(0, INCOME/2)*2)
+IR = round(incomeTaxes(0, round(INCOME/2))*2)
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
     - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
@@ -294,13 +298,13 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG  # 246574
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.097) + \
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
     round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
 CEHR_TAXES = 0
-TAXES = round(incomeTaxes(0, INCOME/2.0) * 2.0) + \
+TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
@@ -311,7 +315,7 @@ TAXES = round(incomeTaxes(0, INCOME/2.0) * 2.0) + \
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
 ```python
-IR = round(incomeTaxes(0, INCOME/2)*2)
+IR = round(incomeTaxes(0, round(INCOME/2)))*2
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
     - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
@@ -369,12 +373,13 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG  # 333677
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.097) + round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
+SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
+    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
 CEHR_TAXES = 0
-TAXES = round(incomeTaxes(0, INCOME/2.0) * 2.0) + \
+TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
@@ -385,7 +390,7 @@ TAXES = round(incomeTaxes(0, INCOME/2.0) * 2.0) + \
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
 
 ```python
-IR = round(incomeTaxes(0, INCOME/2)*2)
+IR = round(incomeTaxes(0, round(INCOME/2))*2)
 Rinclus = var_1AJ - round(DEDUCTION1*(var_1AJ)/(var_1AJ+var_1TT)) + var_1BJ \
     - round(DEDUCTION2*(var_1BJ)/(var_1BJ+var_1UT))
 RNI = Rinclus + var_1TT - round(DEDUCTION1*(var_1TT)/(var_1AJ+var_1TT)) + var_1UT \
