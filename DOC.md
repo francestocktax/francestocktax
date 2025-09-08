@@ -86,11 +86,46 @@ Use the **“Add New Dividends”** form in the app and add each dividend manual
 |---------------------|-------------------------------|
 | **Ticker Name**     | `AAPL`                        |
 | **Payment Date**    | Activity date from statement  |
-| **Payment Country** | `US`                          |
+| **Payment Country** | `Etats-Unis`                  |
 | **Dividend Amount** | Amount of **Qualified Dividend** |
-| **Tax Withholding** | `0.15`                        |
+| **Tax Withholding** | Auto-filled by the app        |
 | **USD/EUR Rate**    | Auto-filled by the app        |
 
 Repeat this process **4 times**, once for each dividend.
 
 ✅ That’s it! Your AAPL dividends for 2024 will now be properly tracked for French tax purposes.
+
+## 💰 How to add your E*TRADE interests
+
+To add all your **E*TRADE interests** in **France Stock Tax**, you’ll need the last **Single Account Statements** of the year.
+
+### 📥 Download the last Single Account Statement from E*TRADE
+
+1. Log in to your **E*TRADE account**.
+2. Go to **Documents > Documents and Statements**.
+3. Select **Document type**: **Statements**.
+4. Set **Timeframe:** to `2024` and click **Apply**.
+5. Download the last **Single Account Statement** (12/31/2024).
+
+### 📝 Locate your interests
+
+In the last statement, find the **CASH FLOW** section:
+
+> **CASH FLOW** > **OPENING CASH, BDP, MMFS** > **This Year (1/1/24-12/31/24)**
+
+### ➕ Enter the interests in France Stock Tax
+
+Use the **“Add New Interests”** form in the app and add interests manually:
+
+| Field                    | Value                            |
+|--------------------------|----------------------------------|
+| **Account Name**         | `E-Trade`                        |
+| **Payment Date**         | 12/31/2024                       |
+| **Payment Country**      | `Etats-Unis`                     |
+| **Interest Amount**      | Amount of **Interests**          |
+| **Tax Withholding**      | Auto-filled by the app           |
+| **Yearly Exchange Rate** | Average USD/EUR Rate of the Year |
+
+You can compute the **Yearly Exchange Rate** with the average of the 1st January 2024 and the 31th December 2024, e.g: (0.92 + 0.96)/2 = 0.94.
+
+✅ That’s it! Your E-Trade interests for 2024 will now be properly tracked for French tax purposes.
