@@ -506,7 +506,7 @@ IR1*(Rinclus1/RNI1)/(Rras1) # 25.2
     - IR*(Rinclus/RNI)/(Rras)* 0)/(var_1BJ) # 27.8%
 
 ```
-# CDHR Examples
+# CDHR and Taux d'Imposition Moyen Examples
 
 The Contribution Differentielle sur les Hauts Revenus is quite complex to compute, this is what you need to compute it.
 
@@ -528,12 +528,14 @@ def computeTaxesForCDHR(
     if tax_shares >= 2.0 and RFR_AUTONOME >= 500_000.0:
         TOTAL_TAXES += 12_500.0
     return TOTAL_TAXES
+```
 
+```python
 def computeCDHRTaxes(
     total_taxes_for_cdhr: float,
     RFR_AUTONOME: float,
     tax_shares: float,
-) -> float:
+) -> (float, float):
     if RFR_AUTONOME != 0.0:
         average_tax_rate = roundu(total_taxes_for_cdhr / RFR_AUTONOME * 1000.0) / 10.0
     else:
@@ -543,7 +545,7 @@ def computeCDHRTaxes(
         or (tax_shares >= 2.0 and RFR_AUTONOME >= 500_000.0)
     )
     if not is_applicable:
-        return 0.0
+        return (0.0, average_tax_rate)
     target_tax = roundu(RFR_AUTONOME * 0.20)
     discount = 0.0
     if tax_shares == 1.0 and RFR_AUTONOME <= 330_000.0:
@@ -553,8 +555,9 @@ def computeCDHRTaxes(
     cdhr_taxes = 0.0
     if (target_tax - discount) > total_taxes_for_cdhr:
         cdhr_taxes = target_tax - discount - total_taxes_for_cdhr
-    return cdhr_taxes
+    return (cdhr_taxes, average_tax_rate)
 ```
+
 ## Employee / Married / Hollande, Macron 1 and Macron 3 stocks
 
 An employee has an annual salary (**1AJ**) of **10000 euros**. He sold **Hollande** stocks with **acquisition gains** of **89_300 euros**. And he also sold **Macron 1** with acquisition gains of **89_300 euros** and **Macron 3** with acquisition gains of **44_650 euros** (**1TZ = 133_950**, **1UZ = 89_300**, **1WZ = 44_650**).
@@ -607,7 +610,7 @@ TAXES = INCOME_TAXES + \
     CAPITAL_GAINS_INCOME_TAXES + \
     CEHR_TAXES  # 6437366
 TAXES_FOR_CDHR = computeTaxesForCDHR(INCOME_TAXES, var_3VG, var_2DC, var_2TR, CEHR_TAXES, RFR_AUTONOME, tax_shares)
-CDHR_TAXES = computeCDHRTaxes(TAXES_FOR_CDHR, RFR_AUTONOME, tax_shares) # 596572
+(CDHR_TAXES, TAUX_IMPOSITION_MOYEN) = computeCDHRTaxes(TAXES_FOR_CDHR, RFR_AUTONOME, tax_shares) # (596572, 16.8)
 TOTAL_TAXES = TAXES + CDHR_TAXES # 7033938
 ```
 
