@@ -5,15 +5,19 @@ You can simulate those examples using [Official French Taxes Simulator](https://
 
 ## Pre-requisites: income taxes in Python
 
+```python
+import math
+def roundu(x: float) -> int:
+    return math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
+```
+
 Compute the income taxes for 2025 year.
 
 ```python
 import sys
-import math
-def roundu(x: float) -> int:
-    return math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
 def incomeTaxes(current_sum, gain_acq_imposable):
-    tranches = [(0, 0, 11497), (0.11, 11498, 29315), (0.30, 29316, 83823), (0.41, 83824, 180294), (0.45, 180295, sys.maxsize)]
+    tranches = [(0, 0, 11497), (0.11, 11498, 29315), (0.30, 29316, 83823), \
+        (0.41, 83824, 180294), (0.45, 180295, sys.maxsize)]
     to_process = gain_acq_imposable
     impot = 0
     for k in tranches:
@@ -69,6 +73,8 @@ var_1UT = 0
 var_1TZ = 0
 var_1UZ = 0
 var_1WZ = 0
+var_2DC = 0
+var_2TR = 0
 var_3VG = 50_000
 var_6DE = 0
 tax_shares = 1.0
@@ -85,17 +91,21 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 225574
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, INCOME)) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME))
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES # 90630
 ```
 
@@ -125,6 +135,8 @@ var_1UT = 0
 var_1TZ = 175_000
 var_1UZ = 175_000
 var_1WZ = 0
+var_2DC = 0
+var_2TR = 0
 var_3VG = 50_000
 var_6DE = 0
 tax_shares = 1.0
@@ -140,17 +152,21 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 481000
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, INCOME)) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME))
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES  + \
     CEHR_TAXES # 174063
 ```
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
@@ -177,6 +193,8 @@ var_1UT = 0
 var_1TZ = 150_000
 var_1UZ = 0
 var_1WZ = 150_000
+var_2DC = 0
+var_2TR = 0
 var_3VG = 50_000
 var_6DE = 0
 tax_shares = 2.0
@@ -192,17 +210,21 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 652574.0
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME/2.0) * 2.0)
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES  # 238152
 ```
 
@@ -252,6 +274,8 @@ var_1UT = 40_000
 var_1TZ = 150_000
 var_1UZ = 150_000
 var_1WZ = 0
+var_2DC = 0
+var_2TR = 0
 var_3VG = 60_000
 var_6DE = 0
 tax_shares = 2.0
@@ -267,17 +291,21 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG # 606574.0
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME/2.0) * 2.0)
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES  # 212602
 ```
 
@@ -327,6 +355,8 @@ var_1UT = 0
 var_1TZ = 0
 var_1UZ = 0
 var_1WZ = 0
+var_2DC = 0
+var_2TR = 0
 var_3VG = 0
 var_6DE = 7_000
 tax_shares = 2.0
@@ -342,18 +372,22 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG  # 246574
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME/2.0) * 2.0)
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
-    CEHR_TAXES # 68985
+    CEHR_TAXES  # 68985
 ```
 
 ### Withholding tax rate / Taux de prélèvement à la source (taux foyer)
@@ -405,6 +439,8 @@ var_1UT = 16_273
 var_1TZ = 6_509
 var_1UZ = 6_509
 var_1WZ = 0
+var_2DC = 0
+var_2TR = 0
 var_3VG = 34_612
 var_6DE = 7_000
 tax_shares = 2.0
@@ -420,17 +456,21 @@ RFR = INCOME + var_1UZ + var_1WZ + var_3VG  # 333677
 ### Total Taxes
 
 ```python
-SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + var_1UT) * 0.005) + \
-    round((var_1TZ + var_1WZ + var_1UZ) * 0.097) +  round((var_1TZ + var_1WZ + var_1UZ) * 0.075)
-EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
-CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
-CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
-TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
-    SOCIAL_ACQ_GAINS_TAXES + \
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME/2.0) * 2.0)
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
     CAPITAL_GAINS_INCOME_TAXES + \
-    CAPITAL_GAINS_SOCIAL_TAXES + \
     CEHR_TAXES  # 108714
 ```
 
