@@ -9,6 +9,9 @@ Compute the income taxes for 2025 year.
 
 ```python
 import sys
+import math
+def roundu(x: float) -> int:
+    return math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
 def incomeTaxes(current_sum, gain_acq_imposable):
     tranches = [(0, 0, 11497), (0.11, 11498, 29315), (0.30, 29316, 83823), (0.41, 83824, 180294), (0.45, 180295, sys.maxsize)]
     to_process = gain_acq_imposable
@@ -49,7 +52,7 @@ def computeCEHRTaxes(RFR: float, tax_shares: float) -> float:
         if RFR > 1_000_000.0:
             amount = RFR - 1_000_000.0
             taxes += amount * 0.04
-    return round(taxes)
+    return roundu(taxes)
 ```
 
 ## 1. Employee / Single / Hollande stocks
@@ -463,3 +466,108 @@ IR1*(Rinclus1/RNI1)/(Rras1) # 25.2
     - IR*(Rinclus/RNI)/(Rras)* 0)/(var_1BJ) # 27.8%
 
 ```
+# CDHR Examples
+
+The Contribution Differentielle sur les Hauts Revenus is quite complex to compute, this is what you need to compute it.
+
+## Pre-requisites for CDHR computation
+
+```python
+def computeTaxesForCDHR(
+    INCOME_TAXES: float,
+    var_3VG: float,
+    var_2DC: float,
+    var_2TR: float,
+    CEHR_TAXES: float,
+    RFR_AUTONOME: float,
+    tax_shares: float,
+) -> float:
+    capital_income = var_3VG + var_2DC + var_2TR
+    capital_taxes = roundu(capital_income * 0.128)
+    TOTAL_TAXES = INCOME_TAXES + capital_taxes + CEHR_TAXES
+    if tax_shares >= 2.0 and RFR_AUTONOME >= 500_000.0:
+        TOTAL_TAXES += 12_500.0
+    return TOTAL_TAXES
+
+def computeCDHRTaxes(
+    total_taxes_for_cdhr: float,
+    RFR_AUTONOME: float,
+    tax_shares: float,
+) -> float:
+    if RFR_AUTONOME != 0.0:
+        average_tax_rate = roundu(total_taxes_for_cdhr / RFR_AUTONOME * 1000.0) / 10.0
+    else:
+        average_tax_rate = 0.0
+    is_applicable = (average_tax_rate < 20.0) and (
+        (tax_shares == 1.0 and RFR_AUTONOME >= 250_000.0)
+        or (tax_shares >= 2.0 and RFR_AUTONOME >= 500_000.0)
+    )
+    if not is_applicable:
+        return 0.0
+    target_tax = roundu(RFR_AUTONOME * 0.20)
+    discount = 0.0
+    if tax_shares == 1.0 and RFR_AUTONOME <= 330_000.0:
+        discount = target_tax - 0.825 * (RFR_AUTONOME - 250_000.0)
+    elif tax_shares >= 2.0 and RFR_AUTONOME <= 660_000.0:
+        discount = target_tax - 0.825 * (RFR_AUTONOME - 500_000.0)
+    cdhr_taxes = 0.0
+    if (target_tax - discount) > total_taxes_for_cdhr:
+        cdhr_taxes = target_tax - discount - total_taxes_for_cdhr
+    return cdhr_taxes
+```
+## Employee / Married / Hollande, Macron 1 and Macron 3 stocks
+
+An employee has an annual salary (**1AJ**) of **10000 euros**. He sold **Hollande** stocks with **acquisition gains** of **89_300 euros**. And he also sold **Macron 1** with acquisition gains of **89_300 euros** and **Macron 3** with acquisition gains of **44_650 euros** (**1TZ = 133_950**, **1UZ = 89_300**, **1WZ = 44_650**).
+His wife has a salary of **0 euros** (**1BJ**).
+They have a **capital gains** of **18_602_800 euros** (**3VG**).
+
+
+### Reference Fiscal Revenue / Revenu Fiscal de Reference 
+
+```python
+var_1AJ = 10_000
+var_1TT = 89_300
+var_1BJ = 0
+var_1UT = 0
+var_1TZ = 133_950
+var_1UZ = 89_300
+var_1WZ = 44_650
+var_3VG = 18_602_800
+var_2DC = 0
+var_2TR = 0
+var_6DE = 0
+tax_shares = 2.0
+MAX_10PERCENT_DEDUCTION = 14_426
+DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(roundu((var_1AJ + var_1TT) * 0.10), \
+    MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
+DEDUCTION2 = min(MAX_10PERCENT_DEDUCTION, max(roundu((var_1BJ + var_1UT) * 0.10), \
+    MIN_10PERCENT_DEDUCTION if (var_1BJ + var_1UT) >= MIN_10PERCENT_DEDUCTION else (var_1BJ + var_1UT)))
+INCOME = var_1AJ + var_1TT - DEDUCTION1 +  var_1BJ + var_1UT  - DEDUCTION2 + var_1TZ - var_6DE
+RFR = INCOME + var_1UZ + var_1WZ + var_3VG  # 18960070
+RFR_AUTONOME = INCOME + var_1UZ + var_3VG  # 18915420
+```
+
+### Total Taxes
+
+```python
+CRDS_CSG = roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.097)
+CRDS =  roundu((var_1TT + var_1UT) * 0.005)
+CSG =  roundu((var_1TT + var_1UT) * 0.092)
+EMPLOYEE_CONTRIBUTION_TAXES  = roundu((var_1TT + var_1UT) * 0.10)
+PRELEVEMENT_SOLIDARITES =  roundu((var_1TZ + var_1UZ + var_1WZ + var_3VG + var_2DC + var_2TR) * 0.075)
+CAPITAL_GAINS_INCOME_TAXES = roundu((var_3VG + var_2DC + var_2TR)*0.128)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares) # 733403
+INCOME_TAXES = roundu(incomeTaxes(0, INCOME/2.0) * 2.0)
+TAXES = INCOME_TAXES + \
+    CRDS_CSG + \
+    CRDS + \
+    CSG + \
+    EMPLOYEE_CONTRIBUTION_TAXES + \
+    PRELEVEMENT_SOLIDARITES + \
+    CAPITAL_GAINS_INCOME_TAXES + \
+    CEHR_TAXES  # 6437366
+TAXES_FOR_CDHR = computeTaxesForCDHR(INCOME_TAXES, var_3VG, var_2DC, var_2TR, CEHR_TAXES, RFR_AUTONOME, tax_shares)
+CDHR_TAXES = computeCDHRTaxes(TAXES_FOR_CDHR, RFR_AUTONOME, tax_shares) # 596572
+TOTAL_TAXES = TAXES + CDHR_TAXES # 7033938
+```
+
