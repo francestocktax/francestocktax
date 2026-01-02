@@ -30,24 +30,24 @@ def incomeTaxes(current_sum, gain_acq_imposable):
 Compute the CEHR taxes :
 
 ```python
-def computeCEHRTaxes(fiscal_revenue: float, tax_shares: float) -> float:
+def computeCEHRTaxes(RFR: float, tax_shares: float) -> float:
     taxes = 0.0
     if tax_shares == 1.0:
-        if fiscal_revenue > 250_000.0:
-            amount = (500_000.0 - 250_000.0) if fiscal_revenue > 500_000.0 else (fiscal_revenue - 250_000.0)
+        if RFR > 250_000.0:
+            amount = (500_000.0 - 250_000.0) if RFR > 500_000.0 else (RFR - 250_000.0)
             taxes += amount * 0.03
-        if fiscal_revenue > 500_000.0:
-            amount = (1_000_000.0 - 500_000.0) if fiscal_revenue > 1_000_000.0 else (fiscal_revenue - 500_000.0)
+        if RFR > 500_000.0:
+            amount = (1_000_000.0 - 500_000.0) if RFR > 1_000_000.0 else (RFR - 500_000.0)
             taxes += amount * 0.04
-        if fiscal_revenue > 1_000_000.0:
-            amount = fiscal_revenue - 1_000_000.0
+        if RFR > 1_000_000.0:
+            amount = RFR - 1_000_000.0
             taxes += amount * 0.04
     else:
-        if fiscal_revenue > 500_000.0:
-            amount = (1_000_000.0 - 500_000.0) if fiscal_revenue > 1_000_000.0 else (fiscal_revenue - 500_000.0)
+        if RFR > 500_000.0:
+            amount = (1_000_000.0 - 500_000.0) if RFR > 1_000_000.0 else (RFR - 500_000.0)
             taxes += amount * 0.03
-        if fiscal_revenue > 1_000_000.0:
-            amount = fiscal_revenue - 1_000_000.0
+        if RFR > 1_000_000.0:
+            amount = RFR - 1_000_000.0
             taxes += amount * 0.04
     return round(taxes)
 ```
@@ -68,7 +68,7 @@ var_1UZ = 0
 var_1WZ = 0
 var_3VG = 50_000
 var_6DE = 0
-shares = 1.0
+tax_shares = 1.0
 MAX_10PERCENT_DEDUCTION = 14_426
 MIN_10PERCENT_DEDUCTION = 504
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
@@ -87,7 +87,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, INCOME)) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
@@ -124,7 +124,7 @@ var_1UZ = 175_000
 var_1WZ = 0
 var_3VG = 50_000
 var_6DE = 0
-shares = 1.0
+tax_shares = 1.0
 MAX_10PERCENT_DEDUCTION = 14_426
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
     MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
@@ -142,7 +142,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, INCOME)) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
@@ -176,7 +176,7 @@ var_1UZ = 0
 var_1WZ = 150_000
 var_3VG = 50_000
 var_6DE = 0
-shares = 2.0
+tax_shares = 2.0
 MAX_10PERCENT_DEDUCTION = 14_426
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
     MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
@@ -194,7 +194,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
@@ -251,7 +251,7 @@ var_1UZ = 150_000
 var_1WZ = 0
 var_3VG = 60_000
 var_6DE = 0
-shares = 2.0
+tax_shares = 2.0
 MAX_10PERCENT_DEDUCTION = 14_426
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
     MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
@@ -269,7 +269,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
@@ -326,7 +326,7 @@ var_1UZ = 0
 var_1WZ = 0
 var_3VG = 0
 var_6DE = 7_000
-shares = 2.0
+tax_shares = 2.0
 MAX_10PERCENT_DEDUCTION = 14_426
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
     MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
@@ -344,7 +344,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
@@ -404,7 +404,7 @@ var_1UZ = 6_509
 var_1WZ = 0
 var_3VG = 34_612
 var_6DE = 7_000
-shares = 2.0
+tax_shares = 2.0
 MAX_10PERCENT_DEDUCTION = 14_426
 DEDUCTION1 = min(MAX_10PERCENT_DEDUCTION, max(round((var_1AJ + var_1TT) * 0.10), \
     MIN_10PERCENT_DEDUCTION if (var_1AJ + var_1TT) >= MIN_10PERCENT_DEDUCTION else (var_1AJ + var_1TT)))
@@ -422,7 +422,7 @@ SOCIAL_ACQ_GAINS_TAXES = round((var_1TT + var_1UT) * 0.092) + round((var_1TT + v
 EMPLOYEE_CONTRIBUTION_TAXES = round((var_1TT + var_1UT) * 0.10)
 CAPITAL_GAINS_INCOME_TAXES = round(var_3VG*0.128)
 CAPITAL_GAINS_SOCIAL_TAXES = round((var_3VG*0.097) + (var_3VG*0.075))
-CEHR_TAXES = computeCEHRTaxes(RFR, shares)
+CEHR_TAXES = computeCEHRTaxes(RFR, tax_shares)
 TAXES = round(incomeTaxes(0, round(INCOME/2.0)) * 2.0) + \
     SOCIAL_ACQ_GAINS_TAXES + \
     EMPLOYEE_CONTRIBUTION_TAXES + \
