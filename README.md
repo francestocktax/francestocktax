@@ -33,9 +33,13 @@ We’re happy to collaborate and extend compatibility!
 
 ## 📚 Documentation
 
-- France Stock Tax documentation is available in [DOC.md](./DOC.md).
-- Restricted Stocks Taxes documentation is available in [RSU.md](./RSU.md).
-- Multiple examples are available in [EXAMPLES.md](./EXAMPLES.md).
+Start here: **[docs/README.md](./docs/README.md)** (sommaire).
+
+| Guide | What you’ll find |
+|-------|------------------|
+| [Guide utilisateur](./docs/guide-utilisateur.md) | E*TRADE import, sale simulation, dividends & interests |
+| [RSU / AGA](./docs/rsu-aga.md) | French tax regimes for restricted stock / AGA |
+| [Exemples de calcul](./docs/exemples.md) | Sample IR / CEHR / CDHR calculations |
 
 ---
 
